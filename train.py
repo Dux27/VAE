@@ -1,16 +1,13 @@
 import torch
 import numpy as np
 import torch.nn as nn
-import matplotlib.pyplot as plt
 import os
 from torchvision.datasets import MNIST
 from torch.utils.data import DataLoader
 import torchvision.transforms as transforms
 from torch.optim import Adam
-from mpl_toolkits.axes_grid1 import ImageGrid
-from torchvision.utils import save_image, make_grid
 
-# create a transofrm to apply to each datapoint
+# create a transform to apply to each datapoint
 transform = transforms.Compose([transforms.ToTensor()])
 
 # download the MNIST datasets
@@ -26,25 +23,7 @@ test_loader = DataLoader(dataset=test_dataset, batch_size=batch_size, shuffle=Fa
 
 # check if GPU is available
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("Used device: " + "cuda" if torch.cuda.is_available() else "cpu")
-
-# get 25 sample training images for visualization
-dataiter = iter(train_loader)
-image = next(dataiter)
-
-# num_samples = 25
-# sample_images = [] 
-# for i in range(num_samples):
-#     sample_images.append(image[0][i][0])
-
-# fig = plt.figure(figsize=(5, 5))
-# grid = ImageGrid(fig, 111, nrows_ncols=(5, 5), axes_pad=0.1)
-
-# for ax, im in zip(grid, sample_images):
-#     ax.imshow(im, cmap='gray')
-#     ax.axis('off')
-
-# plt.show()
+print("Used device: " + ("Cuda" if torch.cuda.is_available() else "CPU"))
 
 class VAE(nn.Module):
 
@@ -101,13 +80,12 @@ def loss_function(x, x_hat, mean, log_var):
 
     return reproduction_loss + KLD
 
-x_dim = 28 * 28  
 def train(model, optimizer, epochs, device):
     model.train()
     for epoch in range(epochs):
         overall_loss = 0
         for batch_idx, (x, _) in enumerate(train_loader):
-            x = x.view(batch_size, x_dim).to(device)
+            x = x.view(batch_size, 784).to(device)
 
             optimizer.zero_grad()
 
@@ -122,15 +100,8 @@ def train(model, optimizer, epochs, device):
         print("\tEpoch", epoch + 1, "\tAverage Loss: ", overall_loss/(batch_idx*batch_size))
     return overall_loss
 
-train(model, optimizer, epochs=50, device=device)
+if __name__ == "__main__":
+    train(model, optimizer, epochs=40, device=device)
 
-def generate_digit(mean, var):
-    z_sample = torch.tensor([[mean, var]], dtype=torch.float).to(device)
-    x_decoded = model.decode(z_sample)
-    digit = x_decoded.detach().cpu().reshape(28, 28) # reshape vector to 2d array
-    plt.imshow(digit, cmap='gray')
-    plt.axis('off')
-    plt.show()
-
-generate_digit(0.0, 1.0)
-generate_digit(1.0, 0.0)
+    # Save the model parameters
+    torch.save(model.state_dict(), os.path.join(current_path, 'vae_model.pth'))
