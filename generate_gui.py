@@ -32,15 +32,16 @@ def update_digit(event=None):
 # Create the main window
 root = tk.Tk()
 root.title("VAE Digit Generator")
+root.geometry("300x200")
 
 # Create sliders for mean and variance
-mean_slider = Scale(root, from_=-3.0, to=3.0, resolution=0.1, orient=tk.HORIZONTAL, label="Mean", command=update_digit)
+mean_slider = Scale(root, from_=-3.0, to=3.0, resolution=0.1, orient=tk.HORIZONTAL, label="Mean", command=update_digit, tickinterval=0)
 mean_slider.set(0.0)
-mean_slider.pack()
+mean_slider.pack(fill=tk.X, expand=True)
 
-var_slider = Scale(root, from_=-3, to=3.0, resolution=0.1, orient=tk.HORIZONTAL, label="Variance", command=update_digit)
-var_slider.set(1.0)
-var_slider.pack()
+var_slider = Scale(root, from_=-3, to=3.0, resolution=0.1, orient=tk.HORIZONTAL, label="Variance", command=update_digit, tickinterval=0)
+var_slider.set(0.0)
+var_slider.pack(fill=tk.X, expand=True)
 
 # Run the GUI event loop
 root.mainloop()

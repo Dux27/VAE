@@ -2,9 +2,7 @@
 venv/
 datasets/
 tempCodeRunnerFile.py
-*.tmp
-*.temp
-*.log
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

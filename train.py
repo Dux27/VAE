@@ -27,7 +27,7 @@ print("Used device: " + ("Cuda" if torch.cuda.is_available() else "CPU"))
 
 class VAE(nn.Module):
 
-    def __init__(self, input_dim=784, hidden_dim=400, latent_dim=200, device=device):
+    def __init__(self, input_dim=784, hidden_dim=400, latent_dim=100, device=device):
         super(VAE, self).__init__()
 
         # encoder
@@ -104,4 +104,4 @@ if __name__ == "__main__":
     train(model, optimizer, epochs=40, device=device)
 
     # Save the model parameters
-    torch.save(model.state_dict(), os.path.join(current_path, 'vae_model.pth'))
+    torch.save(model.state_dict(), os.path.join(current_path, 'vae_model_latent_100.pth'))
