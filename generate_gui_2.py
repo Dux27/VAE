@@ -13,7 +13,7 @@ model = VAE().to(device)
 
 # Load the model parameters
 current_path = os.getcwd()
-model.load_state_dict(torch.load(os.path.join(current_path, 'vae_model.pth'), weights_only=True))
+model.load_state_dict(torch.load(os.path.join(current_path, 'vae_model_200_3.pth'), weights_only=True))
 model.eval()
 
 def generate_digit(mean, var):
