@@ -39,12 +39,12 @@ class VAE(nn.Module):
             )
         
         # latent mean and variance 
-        self.mean_layer = nn.Linear(latent_dim, 3)  # Number of parameters
-        self.logvar_layer = nn.Linear(latent_dim, 3)  # Number of parameters
+        self.mean_layer = nn.Linear(latent_dim, 5)  # Number of parameters
+        self.logvar_layer = nn.Linear(latent_dim, 5)  # Number of parameters
         
         # decoder
         self.decoder = nn.Sequential(
-            nn.Linear(3, latent_dim),  # Number of parameters
+            nn.Linear(5, latent_dim),  # Number of parameters
             nn.LeakyReLU(0.2),
             nn.Linear(latent_dim, hidden_dim),
             nn.LeakyReLU(0.2),
