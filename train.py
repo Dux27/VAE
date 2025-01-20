@@ -27,7 +27,7 @@ print("Used device: " + ("Cuda" if torch.cuda.is_available() else "CPU"))
 
 class VAE(nn.Module):
 
-    def __init__(self, input_dim=784, hidden_dim=400, latent_dim=200, device=device):
+    def __init__(self, input_dim=784, hidden_dim=400, latent_dim=100, device=device):
         super(VAE, self).__init__()
 
         # encoder
@@ -39,12 +39,12 @@ class VAE(nn.Module):
             )
         
         # latent mean and variance 
-        self.mean_layer = nn.Linear(latent_dim, 5)  # Number of parameters
-        self.logvar_layer = nn.Linear(latent_dim, 5)  # Number of parameters
+        self.mean_layer = nn.Linear(latent_dim, 2)  # Number of parameters
+        self.logvar_layer = nn.Linear(latent_dim, 2)  # Number of parameters
         
         # decoder
         self.decoder = nn.Sequential(
-            nn.Linear(5, latent_dim),  # Number of parameters
+            nn.Linear(2, latent_dim),  # Number of parameters
             nn.LeakyReLU(0.2),
             nn.Linear(latent_dim, hidden_dim),
             nn.LeakyReLU(0.2),
